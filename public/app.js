@@ -123,7 +123,10 @@ function initAuthListeners() {
 let selectedPlayerIdForModal = null;
 
 // ================= APP INITIALIZATION =================
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // 0. Load shared state from the server (Supabase-backed) before anything else
+  await initState();
+
   // 1. Seed database with mock data if it is empty
   seedDatabaseIfEmpty();
 
@@ -1147,8 +1150,7 @@ function initSettingsListeners() {
   if (btnSeed) {
     btnSeed.addEventListener('click', () => {
       if (confirm('Warning: Seeding mock data will wipe your current database and load default players and matches. Continue?')) {
-        localStorage.removeItem('efootball_rankings_players');
-        localStorage.removeItem('efootball_rankings_matches');
+        _cache = { players: [], matches: [] };
         seedDatabaseIfEmpty();
         alert('Database populated with seed records!');
         handleRoute();

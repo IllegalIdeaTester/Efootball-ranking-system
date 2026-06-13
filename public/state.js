@@ -1,8 +1,74 @@
 // Implemented globally by elo.js
 
-// LocalStorage keys
-const PLAYERS_KEY = 'efootball_rankings_players';
-const MATCHES_KEY = 'efootball_rankings_matches';
+// ================= SHARED STATE (Supabase-backed via /api/state) =================
+//
+// All ranking/Elo computation below still happens entirely in the browser,
+// exactly as before. The ONLY thing that changed is where the raw
+// { players, matches } data lives: instead of localStorage (per-browser),
+// it now lives on the server (Supabase), shared by everyone.
+//
+// _cache holds the current in-memory copy. loadPlayers()/loadMatches() read
+// from it synchronously (so all existing rendering code keeps working
+// unchanged). saveState() updates the cache immediately AND pushes the new
+// state to the server in the background.
+
+let _cache = { players: [], matches: [] };
+let _stateReady = false;
+let _saveQueued = false;
+let _savePending = null;
+
+/**
+ * Fetches the current shared state from the server into _cache.
+ * Must be awaited once on startup before any rendering happens.
+ */
+async function initState() {
+  try {
+    const res = await fetch('/api/state');
+    if (!res.ok) throw new Error('Failed to load state: ' + res.status);
+    const data = await res.json();
+    _cache = {
+      players: Array.isArray(data.players) ? data.players : [],
+      matches: Array.isArray(data.matches) ? data.matches : []
+    };
+  } catch (e) {
+    console.error('Could not load shared state from server, starting empty:', e);
+    _cache = { players: [], matches: [] };
+  }
+  _stateReady = true;
+}
+
+/**
+ * Pushes the current _cache to the server. Fire-and-forget with basic
+ * coalescing so rapid successive saves don't pile up requests.
+ */
+function persistState() {
+  const payload = JSON.stringify({ players: _cache.players, matches: _cache.matches });
+
+  if (_saveQueued) {
+    _savePending = payload;
+    return;
+  }
+
+  _saveQueued = true;
+  fetch('/api/state', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: payload
+  })
+  .catch(e => console.error('Failed to save shared state to server:', e))
+  .finally(() => {
+    _saveQueued = false;
+    if (_savePending) {
+      const next = _savePending;
+      _savePending = null;
+      fetch('/api/state', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: next
+      }).catch(e => console.error('Failed to save shared state to server:', e));
+    }
+  });
+}
 
 /**
  * Helper to generate unique IDs.
@@ -12,27 +78,25 @@ function generateId() {
 }
 
 /**
- * Loads players from localStorage.
+ * Loads players from the shared in-memory cache (deep copy, like before).
  */
 function loadPlayers() {
-  const data = localStorage.getItem(PLAYERS_KEY);
-  return data ? JSON.parse(data) : [];
+  return JSON.parse(JSON.stringify(_cache.players || []));
 }
 
 /**
- * Loads matches from localStorage.
+ * Loads matches from the shared in-memory cache (deep copy, like before).
  */
 function loadMatches() {
-  const data = localStorage.getItem(MATCHES_KEY);
-  return data ? JSON.parse(data) : [];
+  return JSON.parse(JSON.stringify(_cache.matches || []));
 }
 
 /**
- * Saves current players and matches to localStorage.
+ * Saves current players and matches to the shared cache + server.
  */
 function saveState(players, matches) {
-  localStorage.setItem(PLAYERS_KEY, JSON.stringify(players));
-  localStorage.setItem(MATCHES_KEY, JSON.stringify(matches));
+  _cache = { players, matches };
+  persistState();
 }
 
 function seedDatabaseIfEmpty() {
@@ -111,8 +175,8 @@ function seedDefaultData() {
     };
   });
 
-  localStorage.setItem(PLAYERS_KEY, JSON.stringify(defaultPlayers));
-  localStorage.setItem(MATCHES_KEY, JSON.stringify(matches));
+  _cache.players = defaultPlayers;
+  _cache.matches = matches;
   recalculateAllMatches();
 }
 
@@ -346,7 +410,7 @@ function addPlayer(name, room, team, startingPoints = 1000) {
   };
 
   players.push(newPlayer);
-  localStorage.setItem(PLAYERS_KEY, JSON.stringify(players));
+  _cache.players = players;
   return recalculateAllMatches();
 }
 
@@ -360,8 +424,8 @@ function deletePlayer(id) {
   players = players.filter(p => p.id !== id);
   matches = matches.filter(m => m.player1Id !== id && m.player2Id !== id);
 
-  localStorage.setItem(PLAYERS_KEY, JSON.stringify(players));
-  localStorage.setItem(MATCHES_KEY, JSON.stringify(matches));
+  _cache.players = players;
+  _cache.matches = matches;
 
   return recalculateAllMatches();
 }
@@ -415,7 +479,7 @@ function addMatch(player1Id, player2Id, score1, score2, importance, isKnockout =
   };
 
   matches.push(newMatch);
-  localStorage.setItem(MATCHES_KEY, JSON.stringify(matches));
+  _cache.matches = matches;
 
   return recalculateAllMatches();
 }
@@ -426,7 +490,7 @@ function addMatch(player1Id, player2Id, score1, score2, importance, isKnockout =
 function deleteMatch(id) {
   let matches = loadMatches();
   matches = matches.filter(m => m.id !== id);
-  localStorage.setItem(MATCHES_KEY, JSON.stringify(matches));
+  _cache.matches = matches;
   return recalculateAllMatches();
 }
 
@@ -450,8 +514,8 @@ function importData(jsonString) {
     if (!data.players || !data.matches) {
       throw new Error("Invalid import format. Missing 'players' or 'matches' keys.");
     }
-    localStorage.setItem(PLAYERS_KEY, JSON.stringify(data.players));
-    localStorage.setItem(MATCHES_KEY, JSON.stringify(data.matches));
+    _cache.players = data.players;
+    _cache.matches = data.matches;
     recalculateAllMatches();
     return true;
   } catch (e) {
@@ -464,7 +528,7 @@ function importData(jsonString) {
  * Resets the entire database.
  */
 function resetDatabase() {
-  localStorage.removeItem(PLAYERS_KEY);
-  localStorage.removeItem(MATCHES_KEY);
+  _cache = { players: [], matches: [] };
+  persistState();
   return { players: [], matches: [] };
 }

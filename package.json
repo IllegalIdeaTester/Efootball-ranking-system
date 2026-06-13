@@ -9,6 +9,8 @@
     "dev": "node server.js"
   },
   "dependencies": {
-    "express": "^4.22.2"
+    "express": "^4.22.2",
+    "@supabase/supabase-js": "^2.45.4",
+    "dotenv": "^16.4.5"
   }
 }
