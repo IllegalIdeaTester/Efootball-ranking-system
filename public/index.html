@@ -42,23 +42,23 @@
           <i data-lucide="layout-dashboard"></i>
           <span>Dashboard</span>
         </a>
-        <a href="#log-match" class="nav-item" id="nav-log-match">
+        <a href="#log-match" class="nav-item" id="nav-log-match" data-admin-only>
           <i data-lucide="plus-circle"></i>
           <span>Log Match</span>
         </a>
-        <a href="#gamers" class="nav-item" id="nav-gamers">
+        <a href="#gamers" class="nav-item" id="nav-gamers" data-admin-only>
           <i data-lucide="users"></i>
           <span>Gamer Hub</span>
         </a>
-        <a href="#history" class="nav-item" id="nav-history">
+        <a href="#history" class="nav-item" id="nav-history" data-admin-only>
           <i data-lucide="history"></i>
           <span>Match Logs</span>
         </a>
-        <a href="#calculator" class="nav-item" id="nav-calculator">
+        <a href="#calculator" class="nav-item" id="nav-calculator" data-admin-only>
           <i data-lucide="calculator"></i>
           <span>Elo Simulator</span>
         </a>
-        <a href="#settings" class="nav-item" id="nav-settings">
+        <a href="#settings" class="nav-item" id="nav-settings" data-admin-only>
           <i data-lucide="settings"></i>
           <span>Data Control</span>
         </a>
@@ -95,8 +95,41 @@
             <span class="pulse-indicator"></span>
             <span>Season 2026 Active</span>
           </div>
+          <button class="btn btn-admin-login" id="btn-admin-login" title="Admin Login">
+            <i data-lucide="lock"></i>
+            <span id="admin-login-label">Admin</span>
+          </button>
         </div>
       </header>
+
+      <!-- ================= ADMIN LOGIN MODAL ================= -->
+      <div class="modal-backdrop hidden" id="admin-login-modal">
+        <div class="modal-content admin-login-modal-content">
+          <div class="modal-header">
+            <div class="modal-profile-header">
+              <div class="modal-avatar" style="background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));">
+                <i data-lucide="shield" style="width:22px;height:22px;"></i>
+              </div>
+              <div>
+                <h3 style="font-family: var(--font-heading); font-weight: 700;">Admin Access</h3>
+                <p class="text-secondary" style="font-size:0.8rem;">Enter your password to unlock admin controls</p>
+              </div>
+            </div>
+            <button class="modal-close-btn" id="admin-modal-close"><i data-lucide="x"></i></button>
+          </div>
+          <div class="modal-body" style="padding: 28px 30px;">
+            <div class="form-group">
+              <label for="admin-password-input">Password</label>
+              <input type="password" id="admin-password-input" class="form-control" placeholder="Enter admin password" autocomplete="current-password" />
+              <p class="text-danger hidden" id="admin-error-msg" style="font-size:0.82rem; margin-top:4px;">Incorrect password. Try again.</p>
+            </div>
+            <button class="btn btn-primary btn-block" id="btn-admin-submit" style="margin-top: 20px;">
+              <i data-lucide="log-in" style="width:16px;height:16px;margin-right:6px;"></i>
+              Unlock Admin Panel
+            </button>
+          </div>
+        </div>
+      </div>
       
       <!-- Views Container -->
       <div class="view-panel">

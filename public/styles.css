@@ -1794,3 +1794,53 @@ label {
     grid-template-columns: 1fr;
   }
 }
+
+/* ================= ADMIN AUTH STYLES ================= */
+
+.btn-admin-login {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: var(--text-secondary);
+  padding: 7px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  margin-left: 10px;
+}
+
+.btn-admin-login:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: rgba(56, 189, 248, 0.12);
+}
+
+.btn-admin-login.is-admin {
+  background: rgba(74, 222, 128, 0.08);
+  border-color: rgba(74, 222, 128, 0.25);
+  color: var(--color-success);
+}
+
+.btn-admin-login.is-admin:hover {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: var(--color-danger);
+}
+
+.admin-login-modal-content {
+  width: 90%;
+  max-width: 420px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(56, 189, 248, 0.08);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+[data-admin-only] {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}

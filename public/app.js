@@ -1,5 +1,124 @@
 // Orchestrated globally via sequential index.html scripts
 
+// ================= ADMIN AUTH SYSTEM =================
+// Password is checked client-side. For a hostel LAN app this is the right
+// level of protection — keeps casuals out without over-engineering.
+const ADMIN_PASSWORD = 'efootball26admin';
+const ADMIN_SESSION_KEY = 'efootball_admin_session';
+
+function isAdmin() {
+  return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true';
+}
+
+function loginAdmin(password) {
+  if (password === ADMIN_PASSWORD) {
+    sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
+    return true;
+  }
+  return false;
+}
+
+function logoutAdmin() {
+  sessionStorage.removeItem(ADMIN_SESSION_KEY);
+}
+
+/**
+ * Applies auth state to the UI:
+ * - Shows/hides admin-only nav items
+ * - Updates the login button text/icon
+ * - If current route is admin-only and user is not admin, redirects to dashboard
+ */
+function applyAuthState() {
+  const admin = isAdmin();
+  const adminItems = document.querySelectorAll('[data-admin-only]');
+  const loginBtn = document.getElementById('btn-admin-login');
+  const loginLabel = document.getElementById('admin-login-label');
+
+  adminItems.forEach(item => {
+    if (admin) {
+      item.classList.remove('hidden');
+    } else {
+      item.classList.add('hidden');
+    }
+  });
+
+  if (loginBtn && loginLabel) {
+    if (admin) {
+      loginBtn.classList.add('is-admin');
+      loginLabel.textContent = 'Logout';
+      loginBtn.title = 'Click to logout admin session';
+      const icon = loginBtn.querySelector('i');
+      if (icon) { icon.setAttribute('data-lucide', 'log-out'); }
+    } else {
+      loginBtn.classList.remove('is-admin');
+      loginLabel.textContent = 'Admin';
+      loginBtn.title = 'Admin Login';
+      const icon = loginBtn.querySelector('i');
+      if (icon) { icon.setAttribute('data-lucide', 'lock'); }
+    }
+    refreshIcons();
+  }
+
+  // If on an admin-only route without auth, kick back to dashboard
+  const currentHash = window.location.hash;
+  const adminRoutes = ['#log-match', '#gamers', '#history', '#calculator', '#settings'];
+  if (!admin && adminRoutes.includes(currentHash)) {
+    window.location.hash = '#dashboard';
+  }
+}
+
+function initAuthListeners() {
+  const loginBtn = document.getElementById('btn-admin-login');
+  const modal = document.getElementById('admin-login-modal');
+  const closeBtn = document.getElementById('admin-modal-close');
+  const passwordInput = document.getElementById('admin-password-input');
+  const submitBtn = document.getElementById('btn-admin-submit');
+  const errorMsg = document.getElementById('admin-error-msg');
+
+  if (!loginBtn || !modal) return;
+
+  loginBtn.addEventListener('click', () => {
+    if (isAdmin()) {
+      // Already admin — clicking is logout
+      logoutAdmin();
+      applyAuthState();
+    } else {
+      // Open login modal
+      passwordInput.value = '';
+      errorMsg.classList.add('hidden');
+      modal.classList.remove('hidden');
+      refreshIcons();
+      setTimeout(() => passwordInput.focus(), 50);
+    }
+  });
+
+  function attemptLogin() {
+    const pw = passwordInput.value;
+    if (loginAdmin(pw)) {
+      modal.classList.add('hidden');
+      applyAuthState();
+    } else {
+      errorMsg.classList.remove('hidden');
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  }
+
+  submitBtn.addEventListener('click', attemptLogin);
+  passwordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') attemptLogin();
+  });
+
+  closeBtn.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  // Close modal on backdrop click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.add('hidden');
+  });
+}
+
 // Active player profile ID
 let selectedPlayerIdForModal = null;
 
@@ -8,17 +127,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Seed database with mock data if it is empty
   seedDatabaseIfEmpty();
 
-  // 2. Initialize Routing & Event Listeners
+  // 2. Initialize Auth (must run before router so nav items hide correctly)
+  initAuthListeners();
+  applyAuthState();
+
+  // 3. Initialize Routing & Event Listeners
   initRouter();
   initFormListeners();
   initSettingsListeners();
   initModalListeners();
   initCalculatorListeners();
   
-  // 3. Trigger initial route rendering
+  // 4. Trigger initial route rendering
   handleRoute();
   
-  // 4. Initial Lucide icons load
+  // 5. Initial Lucide icons load
   refreshIcons();
 });
 
@@ -61,8 +184,17 @@ function initRouter() {
   });
 }
 
+const ADMIN_ROUTES = new Set(['#log-match', '#gamers', '#history', '#calculator', '#settings']);
+
 function handleRoute() {
   const hash = window.location.hash || '#dashboard';
+
+  // Auth guard: non-admins silently redirected to dashboard
+  if (ADMIN_ROUTES.has(hash) && !isAdmin()) {
+    window.location.hash = '#dashboard';
+    return;
+  }
+
   const route = VIEWS[hash];
   
   if (!route) return;
