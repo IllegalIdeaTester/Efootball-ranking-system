@@ -1,0 +1,524 @@
+{
+  "players": [
+    {
+      "id": "id_dr5p9va8w_1781129119023",
+      "name": "Tunde 'The Wall' Cole",
+      "room": "Room 105",
+      "team": "Paris Saint-Germain",
+      "startingPoints": 1150,
+      "points": 1167.72,
+      "peakPoints": 1167.72,
+      "matchesPlayed": 4,
+      "wins": 2,
+      "draws": 1,
+      "losses": 1,
+      "goalsScored": 9,
+      "goalsConceded": 7,
+      "goalDifference": 2,
+      "form": [
+        "W",
+        "L",
+        "D",
+        "W"
+      ],
+      "ratingHistory": [
+        {
+          "timestamp": 0,
+          "dateString": "Start",
+          "points": 1150,
+          "rank": 1
+        },
+        {
+          "timestamp": 1781129119057,
+          "dateString": "2026-06-10 23:05",
+          "points": 1152.17,
+          "rank": 1
+        },
+        {
+          "timestamp": 1781129119075,
+          "dateString": "2026-06-10 23:05",
+          "points": 1145.93,
+          "rank": 1
+        },
+        {
+          "timestamp": 1781129119093,
+          "dateString": "2026-06-10 23:05",
+          "points": 1143.82,
+          "rank": 1
+        },
+        {
+          "timestamp": 1781129119109,
+          "dateString": "2026-06-10 23:05",
+          "points": 1167.72,
+          "rank": 1
+        }
+      ],
+      "rank": 1,
+      "rankChange": 0
+    },
+    {
+      "id": "id_k37wl9etq_1781129119030",
+      "name": "Chinedu 'Sniper' Obi",
+      "room": "Room 203",
+      "team": "Real Madrid",
+      "startingPoints": 1080,
+      "points": 1084.98,
+      "peakPoints": 1084.98,
+      "matchesPlayed": 4,
+      "wins": 1,
+      "draws": 2,
+      "losses": 1,
+      "goalsScored": 6,
+      "goalsConceded": 7,
+      "goalDifference": -1,
+      "form": [
+        "L",
+        "W",
+        "D",
+        "L"
+      ],
+      "ratingHistory": [
+        {
+          "timestamp": 0,
+          "dateString": "Start",
+          "points": 1080,
+          "rank": 2
+        },
+        {
+          "timestamp": 1781129119057,
+          "dateString": "2026-06-10 23:05",
+          "points": 1077.83,
+          "rank": 2
+        },
+        {
+          "timestamp": 1781129119082,
+          "dateString": "2026-06-10 23:05",
+          "points": 1082.87,
+          "rank": 2
+        },
+        {
+          "timestamp": 1781129119093,
+          "dateString": "2026-06-10 23:05",
+          "points": 1084.98,
+          "rank": 2
+        },
+        {
+          "timestamp": 1781129119104,
+          "dateString": "2026-06-10 23:05",
+          "points": 1084.98,
+          "rank": 2
+        }
+      ],
+      "rank": 2,
+      "rankChange": 0
+    },
+    {
+      "id": "id_85w8wht9x_1781129119040",
+      "name": "Kelechi 'Goal Machine' Eze",
+      "room": "Room 112",
+      "team": "FC Barcelona",
+      "startingPoints": 1000,
+      "points": 1036.4,
+      "peakPoints": 1036.4,
+      "matchesPlayed": 5,
+      "wins": 2,
+      "draws": 2,
+      "losses": 1,
+      "goalsScored": 12,
+      "goalsConceded": 8,
+      "goalDifference": 4,
+      "form": [
+        "D",
+        "W",
+        "W",
+        "W",
+        "L"
+      ],
+      "ratingHistory": [
+        {
+          "timestamp": 0,
+          "dateString": "Start",
+          "points": 1000,
+          "rank": 4
+        },
+        {
+          "timestamp": 1781129119064,
+          "dateString": "2026-06-10 23:05",
+          "points": 1000.29,
+          "rank": 4
+        },
+        {
+          "timestamp": 1781129119071,
+          "dateString": "2026-06-10 23:05",
+          "points": 1002.55,
+          "rank": 4
+        },
+        {
+          "timestamp": 1781129119098,
+          "dateString": "2026-06-10 23:05",
+          "points": 1020.84,
+          "rank": 3
+        },
+        {
+          "timestamp": 1781129119104,
+          "dateString": "2026-06-10 23:05",
+          "points": 1036.4,
+          "rank": 3
+        },
+        {
+          "timestamp": 1781129119109,
+          "dateString": "2026-06-10 23:05",
+          "points": 1036.4,
+          "rank": 3
+        }
+      ],
+      "rank": 3,
+      "rankChange": 0
+    },
+    {
+      "id": "id_8g38gmao2_1781129119034",
+      "name": "Emeka 'Joga Bonito' Kalu",
+      "room": "Room 304",
+      "team": "Manchester City",
+      "startingPoints": 1020,
+      "points": 1007.66,
+      "peakPoints": 1025.95,
+      "matchesPlayed": 3,
+      "wins": 1,
+      "draws": 1,
+      "losses": 1,
+      "goalsScored": 6,
+      "goalsConceded": 6,
+      "goalDifference": 0,
+      "form": [
+        "D",
+        "W",
+        "L"
+      ],
+      "ratingHistory": [
+        {
+          "timestamp": 0,
+          "dateString": "Start",
+          "points": 1020,
+          "rank": 3
+        },
+        {
+          "timestamp": 1781129119064,
+          "dateString": "2026-06-10 23:05",
+          "points": 1019.71,
+          "rank": 3
+        },
+        {
+          "timestamp": 1781129119075,
+          "dateString": "2026-06-10 23:05",
+          "points": 1025.95,
+          "rank": 3
+        },
+        {
+          "timestamp": 1781129119098,
+          "dateString": "2026-06-10 23:05",
+          "points": 1007.66,
+          "rank": 4
+        }
+      ],
+      "rank": 4,
+      "rankChange": -1
+    },
+    {
+      "id": "id_n0ztam4qz_1781129119045",
+      "name": "Abiola 'Tactician' Alao",
+      "room": "Room 215",
+      "team": "Bayern Munich",
+      "startingPoints": 950,
+      "points": 946.98,
+      "peakPoints": 950,
+      "matchesPlayed": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsScored": 1,
+      "goalsConceded": 5,
+      "goalDifference": -4,
+      "form": [
+        "L",
+        "D"
+      ],
+      "ratingHistory": [
+        {
+          "timestamp": 0,
+          "dateString": "Start",
+          "points": 950,
+          "rank": 5
+        },
+        {
+          "timestamp": 1781129119071,
+          "dateString": "2026-06-10 23:05",
+          "points": 947.74,
+          "rank": 5
+        },
+        {
+          "timestamp": 1781129119089,
+          "dateString": "2026-06-10 23:05",
+          "points": 946.98,
+          "rank": 5
+        }
+      ],
+      "rank": 5,
+      "rankChange": 0
+    },
+    {
+      "id": "id_jmqanubma_1781129119050",
+      "name": "Femi 'Super Sub' Johnson",
+      "room": "Room 108",
+      "team": "Arsenal FC",
+      "startingPoints": 900,
+      "points": 895.72,
+      "peakPoints": 900,
+      "matchesPlayed": 2,
+      "wins": 0,
+      "draws": 1,
+      "losses": 1,
+      "goalsScored": 2,
+      "goalsConceded": 3,
+      "goalDifference": -1,
+      "form": [
+        "L",
+        "D"
+      ],
+      "ratingHistory": [
+        {
+          "timestamp": 0,
+          "dateString": "Start",
+          "points": 900,
+          "rank": 6
+        },
+        {
+          "timestamp": 1781129119082,
+          "dateString": "2026-06-10 23:05",
+          "points": 894.96,
+          "rank": 6
+        },
+        {
+          "timestamp": 1781129119089,
+          "dateString": "2026-06-10 23:05",
+          "points": 895.72,
+          "rank": 6
+        }
+      ],
+      "rank": 6,
+      "rankChange": 0
+    }
+  ],
+  "matches": [
+    {
+      "id": "id_l0ry5dfgd_1781129119057",
+      "player1Id": "id_dr5p9va8w_1781129119023",
+      "player2Id": "id_k37wl9etq_1781129119030",
+      "player1Name": "Tunde 'The Wall' Cole",
+      "player2Name": "Chinedu 'Sniper' Obi",
+      "score1": 3,
+      "score2": 1,
+      "importance": 5,
+      "isKnockout": false,
+      "isPSO": false,
+      "psoWinner": null,
+      "timestamp": 1781129119057,
+      "dateString": "2026-06-10 23:05",
+      "player1PointsBefore": 1150,
+      "player2PointsBefore": 1080,
+      "player1PointsAfter": 1152.17,
+      "player2PointsAfter": 1077.83,
+      "player1Delta": 2.17,
+      "player2Delta": -2.17
+    },
+    {
+      "id": "id_3ducb1any_1781129119064",
+      "player1Id": "id_8g38gmao2_1781129119034",
+      "player2Id": "id_85w8wht9x_1781129119040",
+      "player1Name": "Emeka 'Joga Bonito' Kalu",
+      "player2Name": "Kelechi 'Goal Machine' Eze",
+      "score1": 2,
+      "score2": 2,
+      "importance": 15,
+      "isKnockout": false,
+      "isPSO": false,
+      "psoWinner": null,
+      "timestamp": 1781129119064,
+      "dateString": "2026-06-10 23:05",
+      "player1PointsBefore": 1020,
+      "player2PointsBefore": 1000,
+      "player1PointsAfter": 1019.71,
+      "player2PointsAfter": 1000.29,
+      "player1Delta": -0.29,
+      "player2Delta": 0.29
+    },
+    {
+      "id": "id_xe36lo1cv_1781129119071",
+      "player1Id": "id_85w8wht9x_1781129119040",
+      "player2Id": "id_n0ztam4qz_1781129119045",
+      "player1Name": "Kelechi 'Goal Machine' Eze",
+      "player2Name": "Abiola 'Tactician' Alao",
+      "score1": 4,
+      "score2": 0,
+      "importance": 5,
+      "isKnockout": false,
+      "isPSO": false,
+      "psoWinner": null,
+      "timestamp": 1781129119071,
+      "dateString": "2026-06-10 23:05",
+      "player1PointsBefore": 1000.29,
+      "player2PointsBefore": 950,
+      "player1PointsAfter": 1002.55,
+      "player2PointsAfter": 947.74,
+      "player1Delta": 2.26,
+      "player2Delta": -2.26
+    },
+    {
+      "id": "id_se0ejsxok_1781129119075",
+      "player1Id": "id_dr5p9va8w_1781129119023",
+      "player2Id": "id_8g38gmao2_1781129119034",
+      "player1Name": "Tunde 'The Wall' Cole",
+      "player2Name": "Emeka 'Joga Bonito' Kalu",
+      "score1": 2,
+      "score2": 3,
+      "importance": 10,
+      "isKnockout": false,
+      "isPSO": false,
+      "psoWinner": null,
+      "timestamp": 1781129119075,
+      "dateString": "2026-06-10 23:05",
+      "player1PointsBefore": 1152.17,
+      "player2PointsBefore": 1019.71,
+      "player1PointsAfter": 1145.93,
+      "player2PointsAfter": 1025.95,
+      "player1Delta": -6.24,
+      "player2Delta": 6.24
+    },
+    {
+      "id": "id_wu8pvkuh6_1781129119082",
+      "player1Id": "id_k37wl9etq_1781129119030",
+      "player2Id": "id_jmqanubma_1781129119050",
+      "player1Name": "Chinedu 'Sniper' Obi",
+      "player2Name": "Femi 'Super Sub' Johnson",
+      "score1": 2,
+      "score2": 1,
+      "importance": 15,
+      "isKnockout": false,
+      "isPSO": false,
+      "psoWinner": null,
+      "timestamp": 1781129119082,
+      "dateString": "2026-06-10 23:05",
+      "player1PointsBefore": 1077.83,
+      "player2PointsBefore": 900,
+      "player1PointsAfter": 1082.87,
+      "player2PointsAfter": 894.96,
+      "player1Delta": 5.04,
+      "player2Delta": -5.04
+    },
+    {
+      "id": "id_4jpzim2a8_1781129119089",
+      "player1Id": "id_n0ztam4qz_1781129119045",
+      "player2Id": "id_jmqanubma_1781129119050",
+      "player1Name": "Abiola 'Tactician' Alao",
+      "player2Name": "Femi 'Super Sub' Johnson",
+      "score1": 1,
+      "score2": 1,
+      "importance": 15,
+      "isKnockout": false,
+      "isPSO": false,
+      "psoWinner": null,
+      "timestamp": 1781129119089,
+      "dateString": "2026-06-10 23:05",
+      "player1PointsBefore": 947.74,
+      "player2PointsBefore": 894.96,
+      "player1PointsAfter": 946.98,
+      "player2PointsAfter": 895.72,
+      "player1Delta": -0.76,
+      "player2Delta": 0.76
+    },
+    {
+      "id": "id_a9stukbs9_1781129119093",
+      "player1Id": "id_dr5p9va8w_1781129119023",
+      "player2Id": "id_k37wl9etq_1781129119030",
+      "player1Name": "Tunde 'The Wall' Cole",
+      "player2Name": "Chinedu 'Sniper' Obi",
+      "score1": 1,
+      "score2": 1,
+      "importance": 35,
+      "isKnockout": false,
+      "isPSO": false,
+      "psoWinner": null,
+      "timestamp": 1781129119093,
+      "dateString": "2026-06-10 23:05",
+      "player1PointsBefore": 1145.93,
+      "player2PointsBefore": 1082.87,
+      "player1PointsAfter": 1143.82,
+      "player2PointsAfter": 1084.98,
+      "player1Delta": -2.11,
+      "player2Delta": 2.11
+    },
+    {
+      "id": "id_fn6mmkvng_1781129119098",
+      "player1Id": "id_8g38gmao2_1781129119034",
+      "player2Id": "id_85w8wht9x_1781129119040",
+      "player1Name": "Emeka 'Joga Bonito' Kalu",
+      "player2Name": "Kelechi 'Goal Machine' Eze",
+      "score1": 1,
+      "score2": 2,
+      "importance": 35,
+      "isKnockout": false,
+      "isPSO": false,
+      "psoWinner": null,
+      "timestamp": 1781129119098,
+      "dateString": "2026-06-10 23:05",
+      "player1PointsBefore": 1025.95,
+      "player2PointsBefore": 1002.55,
+      "player1PointsAfter": 1007.66,
+      "player2PointsAfter": 1020.84,
+      "player1Delta": -18.29,
+      "player2Delta": 18.29
+    },
+    {
+      "id": "id_iglyepacn_1781129119104",
+      "player1Id": "id_k37wl9etq_1781129119030",
+      "player2Id": "id_85w8wht9x_1781129119040",
+      "player1Name": "Chinedu 'Sniper' Obi",
+      "player2Name": "Kelechi 'Goal Machine' Eze",
+      "score1": 2,
+      "score2": 2,
+      "importance": 50,
+      "isKnockout": true,
+      "isPSO": true,
+      "psoWinner": "B",
+      "timestamp": 1781129119104,
+      "dateString": "2026-06-10 23:05",
+      "player1PointsBefore": 1084.98,
+      "player2PointsBefore": 1020.84,
+      "player1PointsAfter": 1084.98,
+      "player2PointsAfter": 1036.4,
+      "player1Delta": 0,
+      "player2Delta": 15.56
+    },
+    {
+      "id": "id_q13x9k5a5_1781129119109",
+      "player1Id": "id_dr5p9va8w_1781129119023",
+      "player2Id": "id_85w8wht9x_1781129119040",
+      "player1Name": "Tunde 'The Wall' Cole",
+      "player2Name": "Kelechi 'Goal Machine' Eze",
+      "score1": 3,
+      "score2": 2,
+      "importance": 60,
+      "isKnockout": true,
+      "isPSO": false,
+      "psoWinner": null,
+      "timestamp": 1781129119109,
+      "dateString": "2026-06-10 23:05",
+      "player1PointsBefore": 1143.82,
+      "player2PointsBefore": 1036.4,
+      "player1PointsAfter": 1167.72,
+      "player2PointsAfter": 1036.4,
+      "player1Delta": 23.9,
+      "player2Delta": 0
+    }
+  ]
+}

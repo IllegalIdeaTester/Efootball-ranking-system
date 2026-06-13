@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIFA Elo Engine Tests</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0b0f19;
+      color: #f8fafc;
+      padding: 40px;
+      margin: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #121b2e;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      margin-top: 0;
+      color: #38bdf8;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 15px;
+    }
+    .test-case {
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .test-case:last-child {
+      border-bottom: none;
+    }
+    .test-name {
+      font-weight: 600;
+    }
+    .test-desc {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+    .badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .badge-pass {
+      background-color: rgba(74, 222, 128, 0.15);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.3);
+    }
+    .badge-fail {
+      background-color: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .summary {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 1.1rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+    }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>FIFA Coca-Cola Elo Engine Verification</h1>
+    <div id="test-results">
+      <!-- Results injected here -->
+    </div>
+    <div class="summary">
+      <span id="test-summary-text">Running tests...</span>
+      <span id="test-ratio"></span>
+    </div>
+    <a href="index.html" class="btn">Return to Rankings App</a>
+  </div>
+
+  <script src="elo.js"></script>
+  <script>
+
+    const resultsContainer = document.getElementById('test-results');
+    const summaryText = document.getElementById('test-summary-text');
+    const ratioText = document.getElementById('test-ratio');
+
+    let passed = 0;
+    let total = 0;
+
+    function runTest(name, description, assertFn) {
+      total++;
+      const testDiv = document.createElement('div');
+      testDiv.className = 'test-case';
+      
+      let pass = false;
+      let errorMsg = '';
+
+      try {
+        pass = assertFn();
+      } catch (e) {
+        pass = false;
+        errorMsg = e.message;
+      }
+
+      if (pass) {
+        passed++;
+        testDiv.innerHTML = `
+          <div>
+            <div class="test-name">${name}</div>
+            <div class="test-desc">${description}</div>
+          </div>
+          <span class="badge badge-pass">PASSED</span>
+        `;
+      } else {
+        testDiv.innerHTML = `
+          <div>
+            <div class="test-name" style="color: #ef4444;">${name}</div>
+            <div class="test-desc">${description} ${errorMsg ? `(Error: ${errorMsg})` : ''}</div>
+          </div>
+          <span class="badge badge-fail">FAILED</span>
+        `;
+      }
+      resultsContainer.appendChild(testDiv);
+    }
+
+    // Run tests
+    runTest(
+      "Expected Outcome (We) for Equal Players",
+      "We should be exactly 0.500 when ratings are equal (1000 vs 1000).",
+      () => {
+        const we = calculateWe(1000, 1000);
+        return Math.abs(we - 0.5) < 0.0001;
+      }
+    );
+
+    runTest(
+      "Expected Outcome (We) for Stronger Player",
+      "Player A (1200) vs Player B (1000) should yield We ≈ 0.683 for A.",
+      () => {
+        const we = calculateWe(1200, 1000);
+        return we > 0.68 && we < 0.69;
+      }
+    );
+
+    runTest(
+      "Points Exchange for standard friendly",
+      "A wins, players are equal (1000 vs 1000), importance I=10. A should gain +5.00, B should lose -5.00.",
+      () => {
+        const res = calculatePointsExchange(1000, 1000, 2, 1, 10, false, false);
+        return res.deltaA === 5.00 && res.deltaB === -5.00;
+      }
+    );
+
+    runTest(
+      "Points Exchange for Penalty Shootout (PSO)",
+      "League draw (I=15), A wins PSO. A (winner) should get +3.75, B (loser) should get 0.00.",
+      () => {
+        const res = calculatePointsExchange(1000, 1000, 2, 2, 15, false, true, 'A');
+        return res.deltaA === 3.75 && res.deltaB === 0.00;
+      }
+    );
+
+    runTest(
+      "Knockout Stage Protection for defeats",
+      "Cup Final (I=60), Player A (1200) loses to Player B (1000). Player A is protected (0.00 loss), Player B gets +40.98.",
+      () => {
+        const res = calculatePointsExchange(1200, 1000, 1, 2, 60, true, false);
+        return res.deltaA === 0.00 && (res.deltaB > 40 && res.deltaB < 42);
+      }
+    );
+
+    // Update Summary
+    summaryText.innerText = passed === total ? "All calculations verified!" : "Some tests failed.";
+    summaryText.style.color = passed === total ? "#4ade80" : "#ef4444";
+    ratioText.innerText = `${passed} / ${total} Passed`;
+  </script>
+</body>
+</html>
