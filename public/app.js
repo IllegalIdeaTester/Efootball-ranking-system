@@ -3,7 +3,7 @@
 // ================= ADMIN AUTH SYSTEM =================
 // Password is checked client-side. For a hostel LAN app this is the right
 // level of protection — keeps casuals out without over-engineering.
-const ADMIN_PASSWORD = 'efootball26admin';
+const ADMIN_PASSWORD = 'Merci.man1';
 const ADMIN_SESSION_KEY = 'efootball_admin_session';
 
 function isAdmin() {
@@ -123,29 +123,53 @@ function initAuthListeners() {
 let selectedPlayerIdForModal = null;
 
 // ================= APP INITIALIZATION =================
-document.addEventListener('DOMContentLoaded', async () => {
-  // 0. Load shared state from the server (Supabase-backed) before anything else
-  await initState();
+document.addEventListener('DOMContentLoaded', () => {
+  // Load shared state from server first, then continue initialization.
+  // If initState fails (no server yet), continue with local seeding.
+  initState().catch(() => {}).then(() => {
+    // 1. Seed database with mock data if it is empty
+    seedDatabaseIfEmpty();
 
-  // 1. Seed database with mock data if it is empty
-  seedDatabaseIfEmpty();
+    // 2. Initialize Auth (must run before router so nav items hide correctly)
+    initAuthListeners();
+    applyAuthState();
 
-  // 2. Initialize Auth (must run before router so nav items hide correctly)
-  initAuthListeners();
-  applyAuthState();
+    // 3. Initialize Routing & Event Listeners
+    initRouter();
+    initFormListeners();
+    initSettingsListeners();
+    initModalListeners();
+    initCalculatorListeners();
+    
+    // 4. Trigger initial route rendering
+    handleRoute();
+    
+    // 5. Initial Lucide icons load
+    refreshIcons();
 
-  // 3. Initialize Routing & Event Listeners
-  initRouter();
-  initFormListeners();
-  initSettingsListeners();
-  initModalListeners();
-  initCalculatorListeners();
-  
-  // 4. Trigger initial route rendering
-  handleRoute();
-  
-  // 5. Initial Lucide icons load
-  refreshIcons();
+    // 6. Setup Supabase Realtime subscription to auto-refresh UI on external changes
+    import('./supabase-example.js').then(mod => {
+      try {
+        const unsubscribe = mod.subscribeAppState(async (key, value) => {
+          // Re-fetch shared state from server and re-render current view
+          try {
+            await initState();
+            handleRoute();
+          } catch (e) {
+            console.warn('Realtime update handling failed:', e.message);
+          }
+        });
+
+        // Store unsubscribe so developer can call from console if desired
+        window.__SUPABASE_REaltime_UNSUBSCRIBE = unsubscribe;
+      } catch (e) {
+        console.warn('Could not subscribe to Supabase realtime:', e.message || e);
+      }
+    }).catch(err => {
+      // Module not available or import failed (fine on setups without supabase)
+      // console.warn('Realtime module import failed:', err);
+    });
+  });
 });
 
 // Helper to update Lucide icons on demand
@@ -1150,7 +1174,8 @@ function initSettingsListeners() {
   if (btnSeed) {
     btnSeed.addEventListener('click', () => {
       if (confirm('Warning: Seeding mock data will wipe your current database and load default players and matches. Continue?')) {
-        _cache = { players: [], matches: [] };
+        localStorage.removeItem('efootball_rankings_players');
+        localStorage.removeItem('efootball_rankings_matches');
         seedDatabaseIfEmpty();
         alert('Database populated with seed records!');
         handleRoute();

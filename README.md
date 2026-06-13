@@ -84,3 +84,61 @@ http://localhost:3000
 ## License
 
 This project does not include a license file. Add one if you want to make the project open source.
+
+## Supabase Setup
+
+1. Create a free project at https://app.supabase.com and note your `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
+2. Add them to a local `.env` file (see `.env.example`).
+
+3. Create the `app_state` table (use the SQL editor in Supabase):
+
+```sql
+-- Create table to store app state as key/value JSON
+create table if not exists app_state (
+	key text primary key,
+	value jsonb
+);
+
+-- Optional: initialize empty state rows
+insert into app_state (key, value) values
+('players', '[]'::jsonb)
+on conflict (key) do nothing;
+
+insert into app_state (key, value) values
+('matches', '[]'::jsonb)
+on conflict (key) do nothing;
+```
+
+4. Run the server locally (it uses `SUPABASE_URL` and `SUPABASE_ANON_KEY` from `.env`):
+
+```powershell
+npm install
+npm start
+```
+
+The app's server (`server.js`) already initializes a Supabase client and reads/writes the `app_state` table via the `/api/state` endpoints.
+
+### Secure writes with Row Level Security (recommended)
+
+If you enable Row Level Security (RLS) on the `app_state` table you should make sure only the server (using a service role key) can perform inserts/updates, while clients can only read. Example SQL:
+
+```sql
+-- Enable RLS
+alter table app_state enable row level security;
+
+-- Allow public (anon) users to SELECT rows
+create policy "allow_select_for_public" on app_state
+	for select
+	using (true);
+
+-- Deny inserts/updates from anon clients by default (no policy)
+
+-- Create policy to allow server service role to bypass RLS (service key always bypasses RLS when used server-side)
+-- Note: service role key must be kept secret and only used on server-side.
+```
+
+Recommended server config:
+- Set `SUPABASE_SERVICE_KEY` (service role key) in your server environment (see `.env.example`).
+- In `server.js` the code will prefer `SUPABASE_SERVICE_KEY` for server-side operations; this lets your server perform upserts while anonymous browser clients only have read access.
+
+Security note: Never embed the service role key in client-side code or commit it to source control. Use your hosting provider's secret management to store `SUPABASE_SERVICE_KEY`.

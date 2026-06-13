@@ -11,13 +11,19 @@ const PORT = process.env.PORT || 3000;
 // ================= SUPABASE SETUP =================
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.error('Missing SUPABASE_URL or SUPABASE_ANON_KEY environment variables.');
-  console.error('Create a .env file (see .env.example) or set them in your Render dashboard.');
+if (!SUPABASE_URL || (!SUPABASE_ANON_KEY && !SUPABASE_SERVICE_KEY)) {
+  console.error('Missing Supabase environment variables. Provide SUPABASE_URL and either SUPABASE_ANON_KEY or SUPABASE_SERVICE_KEY.');
+  console.error('Create a .env file (see .env.example) or set them in your hosting dashboard.');
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Prefer service role key for server-side writes (safe to keep on server only)
+const supabaseKeyToUse = SUPABASE_SERVICE_KEY || SUPABASE_ANON_KEY;
+const supabase = createClient(SUPABASE_URL, supabaseKeyToUse);
+if (SUPABASE_SERVICE_KEY) {
+  console.log('Supabase: using service key for server-side operations (recommended for secure writes).');
+}
 
 // ================= MIDDLEWARE =================
 app.use(express.json({ limit: '10mb' }));
